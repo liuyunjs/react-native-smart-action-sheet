@@ -9,7 +9,7 @@ export default function App() {
         onPress={() => {
           ActionSheet.show(
             'action sheet',
-            new Array(3).fill(0).map((v, i) => {
+            new Array(30).fill(0).map((v, i) => {
               return {
                 text: 'action sheet item' + i,
               };

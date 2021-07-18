@@ -53,7 +53,8 @@ export const ActionSheet = ({
         </>
       )}
       <ScrollView
-        bounces={false}
+        alwaysBounceVertical={false}
+        alwaysBounceHorizontal={false}
         style={{
           maxHeight:
             height -
