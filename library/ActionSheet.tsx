@@ -1,17 +1,13 @@
 import React from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { ScrollView, Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { Divide } from 'rn-divide';
 import {
   getBottomSpace,
   getStatusBarHeight,
 } from 'react-native-iphone-x-helper';
-import { DarklyTouchableHighlight, DarklyText, DarklyView } from 'rn-darkly';
+import { DarklyText, DarklyView } from 'rn-darkly';
+import { styles } from './styles';
+import { ActionSheetAction } from './ActionSheetAction';
 
 export type Action = {
   text: string;
@@ -35,22 +31,21 @@ export const ActionSheet = ({
   actions,
   onCancel,
   cancelText = '取消',
-  onRequestClose,
+  onRequestClose = () => {},
 }: ActionSheetProps) => {
   const onCancelPress = () => {
-    onRequestClose?.();
+    onRequestClose();
     onCancel?.();
   };
 
   return (
     <DarklyView darkStyle={styles.darkContainer} style={styles.container}>
       {!!title && (
-        <>
+        <Divide>
           <DarklyText darkStyle={styles.darkTitle} style={styles.title}>
             {title}
           </DarklyText>
-          <Divide horizontal />
-        </>
+        </Divide>
       )}
       <ScrollView
         alwaysBounceVertical={false}
@@ -65,80 +60,26 @@ export const ActionSheet = ({
         }}>
         {actions.map((action, index) => {
           return (
-            <React.Fragment key={action.text}>
-              {!!index && <Divide horizontal offset={15} />}
-              <DarklyTouchableHighlight
-                underlayColor="rgba(0, 0, 0, .15)"
-                onPress={() => {
-                  onRequestClose?.();
-                  action.onPress?.();
-                }}
-                style={styles.btn}>
-                <DarklyText
-                  darkStyle={[styles.darkMessage, action.darkStyle]}
-                  style={[styles.btnText, action.style]}>
-                  {action.text}
-                </DarklyText>
-              </DarklyTouchableHighlight>
-            </React.Fragment>
+            <ActionSheetAction
+              {...action}
+              offset={15}
+              key={action.text}
+              divideVisible={!!index}
+              onPress={() => {
+                onRequestClose();
+                action.onPress?.();
+              }}
+            />
           );
         })}
       </ScrollView>
-      <Divide size={8} />
-      <DarklyTouchableHighlight
-        underlayColor="rgba(0, 0, 0, .15)"
+      <ActionSheetAction
+        style={styles.cancelText}
+        darkStyle={styles.darkCancelText}
+        text={cancelText}
         onPress={onCancelPress}
-        style={styles.btn}>
-        <DarklyText darkStyle={styles.darkCancelText} style={styles.cancelText}>
-          {cancelText}
-        </DarklyText>
-      </DarklyTouchableHighlight>
+        divideSize={8}
+      />
     </DarklyView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    backgroundColor: '#fff',
-    paddingBottom: getBottomSpace(),
-  },
-  darkContainer: {
-    backgroundColor: '#333',
-  },
-
-  title: {
-    fontSize: 22,
-    marginTop: 20,
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#333',
-  },
-  darkTitle: {
-    color: '#eee',
-  },
-
-  btn: {
-    height: 54,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    fontSize: 16,
-    color: '#555',
-  },
-  darkMessage: {
-    color: '#ccc',
-  },
-
-  cancelText: {
-    fontSize: 18,
-    color: '#e31111',
-  },
-
-  darkCancelText: {
-    color: '#d20909',
-  },
-});
