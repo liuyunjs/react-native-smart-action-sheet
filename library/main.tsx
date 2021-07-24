@@ -1,14 +1,23 @@
 import React from 'react';
-import { Modal, ModalBaseWithOverlayProps } from 'react-native-smart-modal';
+import { Easing, EasingNode } from 'react-native-reanimated';
+import { Modal } from 'react-native-smart-modal';
+import { ModalInternalProps } from 'react-native-smart-modal/dist/types';
 import { isFunction } from '@liuyunjs/utils/lib/isFunction';
 import { ActionSheet as ActionSheetView, Action } from './ActionSheet';
 
-const namespace = 'ActionSheet';
+const namespace = 'ActionSheet' + Math.random().toString(32);
 
-export const custom = (props: ModalBaseWithOverlayProps) => {
+const E: any = EasingNode || Easing;
+
+const animationConf = {
+  easing: E.inOut(E.cubic),
+};
+
+export const custom = (props: ModalInternalProps) => {
   return Modal.add(namespace, {
-    z: 500,
+    containerStyle: { zIndex: 500 },
     ...props,
+    animationConf,
   });
 };
 
