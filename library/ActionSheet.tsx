@@ -13,7 +13,7 @@ export type Action = {
   text: string;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
-  darkStyle?: StyleProp<ViewStyle>;
+  dark_style?: StyleProp<ViewStyle>;
 };
 
 export type ActionSheetProps = {
@@ -39,10 +39,10 @@ export const ActionSheet = ({
   };
 
   return (
-    <DarklyView darkStyle={styles.darkContainer} style={styles.container}>
+    <DarklyView dark_style={styles.darkContainer} style={styles.container}>
       {!!title && (
         <Divide>
-          <DarklyText darkStyle={styles.darkTitle} style={styles.title}>
+          <DarklyText dark_style={styles.darkTitle} style={styles.title}>
             {title}
           </DarklyText>
         </Divide>
@@ -51,6 +51,7 @@ export const ActionSheet = ({
         alwaysBounceVertical={false}
         alwaysBounceHorizontal={false}
         style={{
+          width: '100%',
           maxHeight:
             height -
             (title ? 65 : 0) -
@@ -75,7 +76,7 @@ export const ActionSheet = ({
       </ScrollView>
       <ActionSheetAction
         style={styles.cancelText}
-        darkStyle={styles.darkCancelText}
+        dark_style={styles.darkCancelText}
         text={cancelText}
         onPress={onCancelPress}
         divideSize={8}

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Easing, EasingNode } from 'react-native-reanimated';
-import { Modal } from 'react-native-smart-modal';
-import { ModalInternalProps } from 'react-native-smart-modal/dist/types';
+import { Modal, ModalInternalProps } from 'react-native-smart-modal';
 import { isFunction } from '@liuyunjs/utils/lib/isFunction';
 import { ActionSheet as ActionSheetView, Action } from './ActionSheet';
+
+export { ActionSheetAction } from './ActionSheetAction';
 
 const namespace = 'ActionSheet' + Math.random().toString(32);
 
@@ -67,3 +68,5 @@ export const ActionSheet = {
   show,
   custom,
 };
+
+export { ActionSheetView };

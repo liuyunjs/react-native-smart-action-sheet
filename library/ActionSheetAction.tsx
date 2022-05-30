@@ -1,13 +1,13 @@
 import { Divide } from 'rn-divide';
-import { DarklyText, DarklyTouchableHighlight } from 'rn-darkly';
+import { DarklyText } from 'rn-darkly';
 import React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
 export const ActionSheetAction: React.FC<{
   text: string;
   style?: StyleProp<TextStyle>;
-  darkStyle?: StyleProp<TextStyle>;
+  dark_style?: StyleProp<TextStyle>;
   onPress: () => void;
   divideVisible?: boolean;
   divideSize?: number;
@@ -16,7 +16,7 @@ export const ActionSheetAction: React.FC<{
   text,
   offset,
   style,
-  darkStyle,
+  dark_style,
   divideVisible,
   divideSize,
   onPress,
@@ -27,16 +27,16 @@ export const ActionSheetAction: React.FC<{
       visible={divideVisible}
       size={divideSize}
       offset={offset}>
-      <DarklyTouchableHighlight
-        underlayColor="rgba(0, 0, 0, .15)"
+      <TouchableOpacity
+        activeOpacity={0.5}
         onPress={onPress}
         style={styles.btn}>
         <DarklyText
-          darkStyle={[styles.darkMessage, darkStyle]}
+          dark_style={[styles.darkMessage, dark_style]}
           style={[styles.btnText, style]}>
           {text}
         </DarklyText>
-      </DarklyTouchableHighlight>
+      </TouchableOpacity>
     </Divide>
   );
 };
