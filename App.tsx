@@ -16,7 +16,7 @@ export default function App() {
             }),
           );
         }}
-        darkStyle={{ color: '#eee' }}>
+        dark_style={{ color: '#eee' }}>
         show action sheet
       </DarklyText>
     </DarklySafeAreaView>
