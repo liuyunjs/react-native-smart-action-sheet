@@ -3,6 +3,8 @@ import { DarklySafeAreaView, DarklyText } from 'rn-darkly';
 import { ActionSheet } from './library/main';
 
 export default function App() {
+  const [visible, setVisible] = React.useState(false);
+
   return (
     <DarklySafeAreaView>
       <DarklyText
@@ -19,6 +21,21 @@ export default function App() {
         dark_style={{ color: '#eee' }}>
         show action sheet
       </DarklyText>
+      <DarklyText
+        onPress={() => setVisible(!visible)}
+        dark_style={{ color: '#eee' }}>
+        show action sheet2
+      </DarklyText>
+      <ActionSheet
+        visible={visible}
+        onWillChange={setVisible}
+        title="action sheet2"
+        actions={new Array(30).fill(0).map((v, i) => {
+          return {
+            text: 'action sheet item' + i,
+          };
+        })}
+      />
     </DarklySafeAreaView>
   );
 }

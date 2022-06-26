@@ -1,16 +1,16 @@
 {
   "name": "rn-smart-action-sheet",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "scripts": {
     "build": "rimraf ./dist; rollup -c rollup.config.js",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "rollup -c rollup.config.js"
   },
   "dependencies": {
     "@liuyunjs/utils": "^1",
     "react-native-iphone-x-helper": "*",
-    "react-native-smart-modal": "^2",
+    "react-native-smart-modal": "^2.1.2",
     "rn-darkly": "^2",
     "rn-divide": "^2"
   },

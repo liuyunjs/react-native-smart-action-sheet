@@ -1,30 +1,34 @@
-import React from 'react';
-import { Easing, EasingNode } from 'react-native-reanimated';
-import { Modal, ModalInternalProps } from 'react-native-smart-modal';
+import { ModalInternalProps } from 'react-native-smart-modal';
 import { isFunction } from '@liuyunjs/utils/lib/isFunction';
-import { ActionSheet as ActionSheetView, Action } from './ActionSheet';
+import {
+  ActionSheet as ActionSheetInternal,
+  ActionSheetProps,
+  Action,
+} from './ActionSheet';
 
 export { ActionSheetAction } from './ActionSheetAction';
 
 const namespace = 'ActionSheet' + Math.random().toString(32);
 
-const E: any = EasingNode || Easing;
+const {
+  show: showInternal,
+  update: updateInternal,
+  hide: hideInternal,
+} = ActionSheetInternal;
 
-const animationConf = {
-  easing: E.inOut(E.cubic),
-};
-
-export const custom = (props: ModalInternalProps) => {
-  return Modal.add(namespace, {
+export const custom = (props: ModalInternalProps & ActionSheetProps) => {
+  return showInternal(namespace, {
     containerStyle: { zIndex: 500 },
     ...props,
-    animationConf,
   });
 };
 
-export const hide = (key: string) => {
-  Modal.remove(namespace, key);
-};
+export const update = (
+  key: string,
+  props: ModalInternalProps & ActionSheetProps,
+) => updateInternal(key, props);
+
+export const hide = (key: string) => hideInternal(namespace, key);
 
 export function show(
   title: string,
@@ -49,24 +53,17 @@ export function show(
     cancelTextOrOnCancel = undefined;
   }
 
-  const key = custom({
-    children: (
-      <ActionSheetView
-        onRequestClose={() => hide(key)}
-        title={title}
-        actions={actions}
-        cancelText={cancelTextOrOnCancel}
-        onCancel={onCancel}
-      />
-    ),
+  return custom({
+    title,
+    actions,
+    cancelText: cancelTextOrOnCancel,
+    onCancel,
   });
-  return key;
 }
 
-export const ActionSheet = {
-  hide,
+export const ActionSheet = Object.assign(ActionSheetInternal, {
   show,
   custom,
-};
-
-export { ActionSheetView };
+  update,
+  hide,
+});

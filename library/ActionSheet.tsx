@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ScrollView, Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { Divide } from 'rn-divide';
 import {
@@ -6,6 +6,11 @@ import {
   getStatusBarHeight,
 } from 'react-native-iphone-x-helper';
 import { DarklyText, DarklyView } from 'rn-darkly';
+import {
+  ModalInternal,
+  ModalInternalProps,
+  withModal,
+} from 'react-native-smart-modal';
 import { styles } from './styles';
 import { ActionSheetAction } from './ActionSheetAction';
 
@@ -22,16 +27,18 @@ export type ActionSheetProps = {
   onCancel?: () => void;
   cancelText?: string;
   onRequestClose?: () => void;
+  forceDark?: boolean;
 };
 
 const { height } = Dimensions.get('window');
 
-export const ActionSheet = ({
+const ActionSheetInternal = ({
   title,
   actions,
   onCancel,
   cancelText = '取消',
   onRequestClose = () => {},
+  forceDark,
 }: ActionSheetProps) => {
   const onCancelPress = () => {
     onRequestClose();
@@ -39,10 +46,16 @@ export const ActionSheet = ({
   };
 
   return (
-    <DarklyView dark_style={styles.darkContainer} style={styles.container}>
+    <DarklyView
+      forceDark={forceDark}
+      dark_style={styles.darkContainer}
+      style={styles.container}>
       {!!title && (
-        <Divide>
-          <DarklyText dark_style={styles.darkTitle} style={styles.title}>
+        <Divide forceDark={forceDark}>
+          <DarklyText
+            forceDark={forceDark}
+            dark_style={styles.darkTitle}
+            style={styles.title}>
             {title}
           </DarklyText>
         </Divide>
@@ -63,6 +76,7 @@ export const ActionSheet = ({
           return (
             <ActionSheetAction
               {...action}
+              forceDark={forceDark}
               offset={15}
               key={action.text}
               divideVisible={!!index}
@@ -75,6 +89,7 @@ export const ActionSheet = ({
         })}
       </ScrollView>
       <ActionSheetAction
+        forceDark={forceDark}
         style={styles.cancelText}
         dark_style={styles.darkCancelText}
         text={cancelText}
@@ -84,3 +99,24 @@ export const ActionSheet = ({
     </DarklyView>
   );
 };
+
+export const ActionSheet = withModal(function ActionSheet({
+  title,
+  actions,
+  onCancel,
+  cancelText,
+  ...rest
+}: ActionSheetProps & ModalInternalProps) {
+  return (
+    <ModalInternal {...rest}>
+      <ActionSheetInternal
+        forceDark={rest.forceDark}
+        title={title}
+        actions={actions}
+        cancelText={cancelText}
+        onCancel={onCancel}
+        onRequestClose={rest.onRequestClose}
+      />
+    </ModalInternal>
+  );
+});

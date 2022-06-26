@@ -1,6 +1,6 @@
 import { Divide } from 'rn-divide';
 import { DarklyText } from 'rn-darkly';
-import React from 'react';
+import * as React from 'react';
 import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
@@ -12,6 +12,7 @@ export const ActionSheetAction: React.FC<{
   divideVisible?: boolean;
   divideSize?: number;
   offset?: number;
+  forceDark?: boolean;
 }> = ({
   text,
   offset,
@@ -20,9 +21,11 @@ export const ActionSheetAction: React.FC<{
   divideVisible,
   divideSize,
   onPress,
+  forceDark,
 }) => {
   return (
     <Divide
+      forceDark={forceDark}
       style={styles.item}
       visible={divideVisible}
       size={divideSize}
@@ -32,6 +35,7 @@ export const ActionSheetAction: React.FC<{
         onPress={onPress}
         style={styles.btn}>
         <DarklyText
+          forceDark={forceDark}
           dark_style={[styles.darkMessage, dark_style]}
           style={[styles.btnText, style]}>
           {text}
