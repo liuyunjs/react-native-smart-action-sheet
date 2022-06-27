@@ -1,35 +1,27 @@
-import { ModalInternalProps } from 'react-native-smart-modal';
 import { isFunction } from '@liuyunjs/utils/lib/isFunction';
-import {
-  ActionSheet as ActionSheetInternal,
-  ActionSheetProps,
-  Action,
-} from './ActionSheet';
+import { isAnyObject } from '@liuyunjs/utils/lib/isAnyObject';
+import { ActionSheet, ActionSheetProps, Action } from './ActionSheet';
 
 export { ActionSheetAction } from './ActionSheetAction';
 
-const namespace = 'ActionSheet' + Math.random().toString(32);
+const { show: showInternal, update, hide } = ActionSheet;
 
-const {
-  show: showInternal,
-  update: updateInternal,
-  hide: hideInternal,
-} = ActionSheetInternal;
+export { update, hide };
 
-export const custom = (props: ModalInternalProps & ActionSheetProps) => {
-  return showInternal(namespace, {
-    containerStyle: { zIndex: 500 },
-    ...props,
-  });
+/**
+ * @deprecated 请使用 show 方法调用
+ */
+// @ts-ignore
+export const custom: typeof ActionSheet.show = (...args) => {
+  console.warn(
+    '[rn-smart-action-sheet]: custom 方法将会被废弃，请使用 show 方法调用',
+  );
+  // @ts-ignore
+  return show(...args);
 };
 
-export const update = (
-  key: string,
-  props: ModalInternalProps & ActionSheetProps,
-) => updateInternal(key, props);
-
-export const hide = (key: string) => hideInternal(namespace, key);
-
+export function show(props: ActionSheetProps): string;
+export function show(namespace: string, props: ActionSheetProps): string;
 export function show(
   title: string,
   actions: Action[],
@@ -43,27 +35,38 @@ export function show(
 ): string;
 export function show(title: string, actions: Action[]): string;
 export function show(
-  title: string,
-  actions: Action[],
+  titleOrNamespaceOrProps: string | ActionSheetProps,
+  actionsOrProps?: Action[] | ActionSheetProps,
   cancelTextOrOnCancel?: string | (() => void),
   onCancel?: () => void,
 ) {
+  if (isAnyObject(titleOrNamespaceOrProps)) {
+    return showInternal(titleOrNamespaceOrProps);
+  }
+  if (!Array.isArray(actionsOrProps)) {
+    return showInternal(titleOrNamespaceOrProps, actionsOrProps!);
+  }
+
   if (isFunction(cancelTextOrOnCancel)) {
     onCancel = cancelTextOrOnCancel;
     cancelTextOrOnCancel = undefined;
   }
 
-  return custom({
-    title,
-    actions,
+  return showInternal({
+    title: titleOrNamespaceOrProps,
+    actions: actionsOrProps,
     cancelText: cancelTextOrOnCancel,
     onCancel,
   });
 }
 
-export const ActionSheet = Object.assign(ActionSheetInternal, {
+const ExportActionSheet = Object.assign(ActionSheet, {
   show,
+  /**
+   * @deprecated 请使用 show 方法调用
+   */
   custom,
-  update,
-  hide,
 });
+
+export default ExportActionSheet;
+export { ExportActionSheet as ActionSheet };

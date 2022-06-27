@@ -22,6 +22,20 @@ export default function App() {
         show action sheet
       </DarklyText>
       <DarklyText
+        onPress={() => {
+          ActionSheet.show({
+            title: 'action sheet custom',
+            actions: new Array(3).fill(0).map((v, i) => {
+              return {
+                text: 'action sheet item' + i,
+              };
+            }),
+          });
+        }}
+        dark_style={{ color: '#eee' }}>
+        show action sheet custom
+      </DarklyText>
+      <DarklyText
         onPress={() => setVisible(!visible)}
         dark_style={{ color: '#eee' }}>
         show action sheet2

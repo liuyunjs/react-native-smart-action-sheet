@@ -21,7 +21,7 @@ export type Action = {
   dark_style?: StyleProp<ViewStyle>;
 };
 
-export type ActionSheetProps = {
+type ActionSheetInternalProps = {
   title?: string;
   actions: Action[];
   onCancel?: () => void;
@@ -29,6 +29,12 @@ export type ActionSheetProps = {
   onRequestClose?: () => void;
   forceDark?: boolean;
 };
+
+export type ActionSheetProps = ActionSheetInternalProps &
+  Omit<
+    ModalInternalProps,
+    'animationIn' | 'animationOut' | 'animation' | 'animationConf'
+  >;
 
 const { height } = Dimensions.get('window');
 
@@ -100,15 +106,17 @@ const ActionSheetInternal = ({
   );
 };
 
-export const ActionSheet = withModal(function ActionSheet({
+const ActionSheet: React.FC<ActionSheetProps> = ({
   title,
   actions,
   onCancel,
   cancelText,
   ...rest
-}: ActionSheetProps & ModalInternalProps) {
+}) => {
   return (
-    <ModalInternal {...rest}>
+    <ModalInternal
+      {...rest}
+      containerStyle={[{ zIndex: 500 }, rest.containerStyle]}>
       <ActionSheetInternal
         forceDark={rest.forceDark}
         title={title}
@@ -119,4 +127,8 @@ export const ActionSheet = withModal(function ActionSheet({
       />
     </ModalInternal>
   );
-});
+};
+
+const ModalActionSheet = withModal(ActionSheet);
+
+export { ModalActionSheet as ActionSheet };
