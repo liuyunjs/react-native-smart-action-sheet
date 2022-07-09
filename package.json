@@ -1,6 +1,6 @@
 {
   "name": "rn-smart-action-sheet",
-  "version": "2.1.1",
+  "version": "3.0.0-beta1",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "scripts": {
@@ -10,14 +10,14 @@
   "dependencies": {
     "@liuyunjs/utils": "^1",
     "react-native-iphone-x-helper": "*",
-    "react-native-smart-modal": "^2.1.2",
-    "rn-darkly": "^2",
+    "react-native-smart-modal": "^3.0.0-beta1",
+    "rn-darkly": "^2.1.0",
     "rn-divide": "^2"
   },
   "peerDependencies": {
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-reanimated": "^2.2.0"
+    "react-native-reanimated": ">=2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -32,7 +32,7 @@
     "metro-react-native-babel-preset": "^0.64.0",
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-reanimated": "^2.2.0",
+    "react-native-reanimated": "^2.9.1",
     "react-test-renderer": "17.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.74.1",

@@ -1,24 +1,11 @@
 import { isFunction } from '@liuyunjs/utils/lib/isFunction';
 import { isAnyObject } from '@liuyunjs/utils/lib/isAnyObject';
 import { ActionSheet, ActionSheetProps, Action } from './ActionSheet';
-
 export { ActionSheetAction } from './ActionSheetAction';
 
 const { show: showInternal, update, hide } = ActionSheet;
 
 export { update, hide };
-
-/**
- * @deprecated 请使用 show 方法调用
- */
-// @ts-ignore
-export const custom: typeof ActionSheet.show = (...args) => {
-  console.warn(
-    '[rn-smart-action-sheet]: custom 方法将会被废弃，请使用 show 方法调用',
-  );
-  // @ts-ignore
-  return show(...args);
-};
 
 export function show(props: ActionSheetProps): string;
 export function show(namespace: string, props: ActionSheetProps): string;
@@ -62,10 +49,6 @@ export function show(
 
 const ExportActionSheet = Object.assign(ActionSheet, {
   show,
-  /**
-   * @deprecated 请使用 show 方法调用
-   */
-  custom,
 });
 
 export default ExportActionSheet;

@@ -31,10 +31,7 @@ type ActionSheetInternalProps = {
 };
 
 export type ActionSheetProps = ActionSheetInternalProps &
-  Omit<
-    ModalInternalProps,
-    'animationIn' | 'animationOut' | 'animation' | 'animationConf'
-  >;
+  Omit<ModalInternalProps, 'animationIn' | 'animationOut'>;
 
 const { height } = Dimensions.get('window');
 

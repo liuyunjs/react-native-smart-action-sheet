@@ -41,8 +41,9 @@ export default function App() {
         show action sheet2
       </DarklyText>
       <ActionSheet
+        forceDark
         visible={visible}
-        onWillChange={setVisible}
+        onChange={setVisible}
         title="action sheet2"
         actions={new Array(30).fill(0).map((v, i) => {
           return {
